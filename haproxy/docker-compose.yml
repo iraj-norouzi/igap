@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+ ###After all services are up, we are initializing the gateway
+ gateway:
+  container_name: gateway-haproxy
+  image: haproxy
+  restart: always
+  volumes:
+    - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+#  ports:
+#   - 6443:6443
+  network_mode: "host"
