@@ -1,0 +1,4 @@
+install 
+https://www.cidevops.com/2018/07/install-nexus3-on-ubuntu-1604-how-to.html
+yum repo
+https://www.youtube.com/watch?v=727injZQ5dw
