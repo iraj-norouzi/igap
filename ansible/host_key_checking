@@ -1,0 +1,1 @@
+cat /etc/ansible/ansible.cfg   two value "true or false"
