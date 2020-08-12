@@ -1,0 +1,33 @@
+
+Runner
+
+Docker Executer
+
+node's docker must be configured. it's explained on New-Server-Setup entry.
+download and init gitlab runner:
+wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64 &&
+chmod +x /usr/local/bin/gitlab-runner &&
+useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash &&
+gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner &&
+gitlab-runner start &&
+usermod -aG docker gitlab-runner  &&
+echo "concurrent = 4" > /etc/gitlab-runner/config.toml
+
+register docker executer
+gitlab-runner register \
+   --url "https://gitlab.DOMAIN.COM" \
+   --description "$HOSTNAME docker executer" \
+   --executor "docker" \
+   --docker-image docker:stable \
+   --docker-volumes '/var/run/docker.sock:/var/run/docker.sock' \
+   --docker-privileged \
+   --locked \
+   --tag-list "igap,docker"
+
+
+
+Kubernetes Executer
+helm repo add gitlab https://charts.gitlab.io
+kubectl create namespace gitlab-runner
+helm upgrade --install gitlab-runner gitlab/gitlab-runner --namespace gitlab-runner -f services/gitlab/gitlab-runner.values.yaml --set runnerRegistrationToken=<registration token>
+kubectl create clusterrolebinding gitlab-runner --clusterrole cluster-admin --serviceaccount=gitlab-runner:default

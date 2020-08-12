@@ -1,0 +1,18 @@
+
+graylog
+Last edited by ahmadali shafiee 1 week ago
+Installation
+
+generate admin password hash for graylog web UI
+echo -n "Enter Password: " && head -1 </dev/stdin | tr -d '\n' | sha256sum | cut -d" " -f1
+copy the output of the previous command in paste it into GRAYLOG_ROOT_PASSWORD_SHA2 env of graylog service on services/graylog/docker-compose.yml
+copy configs to the node
+scp services/graylog/docker-compose.yml graylog.internal.igap:/opt/
+ssh into the server, and bring up the service
+cd /opt
+docker-compose up -d
+update haproxy configs
+login to the webui
+go to content packs
+upload content pack from services/graylog/content-pack.json
+install the iGAP content pack on content packs page

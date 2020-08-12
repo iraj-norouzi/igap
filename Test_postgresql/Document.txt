@@ -1,0 +1,12 @@
+install pgbench : apt-get install postgresql-contrib
+
+run below commands in postgres user: su posgres
+
+for feeding test table run this: pgbench -i
+
+update performance in best senario: pgbench -c 5 -T 20 -P 1 --vacuum-all
+
+update performance in bad senario: pgbench -c 5 -T 20 -P 1 --vacuum-all -N
+
+select performance: pgbench -S -c 40 -T 20 -P 1
+
