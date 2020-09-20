@@ -1,0 +1,149 @@
+global
+  debug
+  maxconn 100000
+defaults
+    maxconn 100000
+    log 127.0.0.1 local2
+    mode http
+    timeout connect 6000
+    timeout client  6000
+    timeout server  6000
+
+listen haproxy
+  bind :80 # ssl crt /etc/ssl/certs/api.igap.net.pem
+  mode http
+  acl cond1 path -i /block-reader    ##This ACL returns true if the URL path extracted from the request by the path directive matches the value "/app1/abc.html" ##
+  acl cond2 path -i /block-writer
+  acl cond3 path -i /user-reader
+  acl cond4 path -i /user-writer
+  acl cond5 path -i /contact-reader
+  acl cond6 path -i /cntact-writer
+  use_backend block_reader   if cond1        ## The backend be_app1 is used whenever the ACL cond1 is TRUE
+  use_backend block_writer   if cond2
+  use_backend user_reader   if cond3
+  use_backend user_writer   if cond4
+  use_backend contact_reader   if cond5
+  use_backend contact_writer   if cond6
+
+frontend files
+  bind :30400
+  mode tcp
+  default_backend files_backend
+
+
+backend files_backend
+   mode tcp
+   balance  roundrobin
+   server worker-1 172.16.1.191:30400 check fall 3 rise 2
+   server worker-2 172.16.1.192:30400 check fall 3 rise 2
+   server worker-3 172.16.1.144:30400 check fall 3 rise 2
+   server worker-4 172.16.1.103:30400 check fall 3 rise 2
+   server worker-5 172.16.1.145:30400 check fall 3 rise 2
+   server worker-6 172.16.1.146:30400 check fall 3 rise 2
+   server worker-7 172.16.1.129:30400 check fall 3 rise 2
+   server worker-8 172.16.1.130:30400 check fall 3 rise 2
+   server worker-9 172.16.1.117:30400 check fall 3 rise 2
+   server worker-10 172.16.1.116:30400 check fall 3 rise 2
+   server worker-11 172.16.1.133:30400 check fall 3 rise 2
+
+
+
+backend block_reader
+#   mode tcp
+   balance  roundrobin
+   server worker-1 172.16.1.191:31193 check fall 3 rise 2
+   server worker-2 172.16.1.192:31193 check fall 3 rise 2
+   server worker-3 172.16.1.144:31193 check fall 3 rise 2
+   server worker-4 172.16.1.103:31193 check fall 3 rise 2
+   server worker-5 172.16.1.145:31193 check fall 3 rise 2
+   server worker-6 172.16.1.146:31193 check fall 3 rise 2
+   server worker-7 172.16.1.129:31193 check fall 3 rise 2
+   server worker-8 172.16.1.130:31193 check fall 3 rise 2
+   server worker-9 172.16.1.117:31193 check fall 3 rise 2
+   server worker-10 172.16.1.116:31193 check fall 3 rise 2
+   server worker-11 172.16.1.133:31193 check fall 3 rise 2
+
+backend block_writer
+#   mode tcp
+   balance  roundrobin
+   server worker-1 172.16.1.191:31670 check fall 3 rise 2
+   server worker-2 172.16.1.192:31670 check fall 3 rise 2
+   server worker-3 172.16.1.144:31670 check fall 3 rise 2
+   server worker-4 172.16.1.103:31670 check fall 3 rise 2
+   server worker-5 172.16.1.145:31670 check fall 3 rise 2
+   server worker-6 172.16.1.146:31670 check fall 3 rise 2
+   server worker-7 172.16.1.129:31670 check fall 3 rise 2
+   server worker-8 172.16.1.130:31670 check fall 3 rise 2
+   server worker-9 172.16.1.117:31193 check fall 3 rise 2
+   server worker-10 172.16.1.116:31193 check fall 3 rise 2
+   server worker-11 172.16.1.133:31193 check fall 3 rise 2
+
+
+
+
+
+backend user_reader
+#   mode tcp
+   balance  roundrobin
+   server worker-10 172.16.1.116:31089 check fall 3 rise 2
+   server worker-11 172.16.1.133:31089 check fall 3 rise 2
+   server worker-7 172.16.1.129:31089 check fall 3 rise 2
+   server worker-4 172.16.1.145:31089 check fall 3 rise 2
+   server worker-8 172.16.1.130:31089 check fall 3 rise 2
+   server worker-6 172.16.1.129:31089 check fall 3 rise 2
+   server worker-9 172.16.1.117:31089 check fall 3 rise 2
+   server worker-1 172.16.1.191:31089 check fall 3 rise 2
+   server worker-2 172.16.1.192:31089 check fall 3 rise 2
+   server worker-3 172.16.1.144:31089 check fall 3 rise 2
+   server worker-5 172.16.1.145:31089 check fall 3 rise 2
+
+
+backend user_writer
+#   mode tcp
+   balance  roundrobin
+   server worker-10 172.16.1.116:31822 check fall 3 rise 2
+   server worker-11 172.16.1.133:31822 check fall 3 rise 2
+   server worker-7 172.16.1.129:31822 check fall 3 rise 2
+   server worker-4 172.16.1.145:31822 check fall 3 rise 2
+   server worker-8 172.16.1.130:31822 check fall 3 rise 2
+   server worker-6 172.16.1.129:31822 check fall 3 rise 2
+   server worker-9 172.16.1.117:31822 check fall 3 rise 2
+   server worker-1 172.16.1.191:31822 check fall 3 rise 2
+   server worker-2 172.16.1.192:31822 check fall 3 rise 2
+   server worker-3 172.16.1.144:31822 check fall 3 rise 2
+   server worker-5 172.16.1.145:31822 check fall 3 rise 2
+
+
+backend contact_reader
+#   mode tcp
+   balance  roundrobin
+   server worker-10 172.16.1.116:31234 check fall 3 rise 2
+   server worker-11 172.16.1.133:31234 check fall 3 rise 2
+   server worker-7 172.16.1.129:31234 check fall 3 rise 2
+   server worker-4 172.16.1.145:31234 check fall 3 rise 2
+   server worker-8 172.16.1.130:31234 check fall 3 rise 2
+   server worker-6 172.16.1.129:31234 check fall 3 rise 2
+   server worker-9 172.16.1.117:31234 check fall 3 rise 2
+   server worker-1 172.16.1.191:31234 check fall 3 rise 2
+   server worker-2 172.16.1.192:31234 check fall 3 rise 2
+   server worker-3 172.16.1.144:31234 check fall 3 rise 2
+   server worker-5 172.16.1.145:31234 check fall 3 rise 2
+
+
+backend contact_writer
+#   mode tcp
+   balance  roundrobin
+   server worker-10 172.16.1.116:31318 check fall 3 rise 2
+   server worker-11 172.16.1.133:31318 check fall 3 rise 2
+   server worker-7 172.16.1.129:31318 check fall 3 rise 2
+   server worker-4 172.16.1.145:31318 check fall 3 rise 2
+   server worker-8 172.16.1.130:31318 check fall 3 rise 2
+   server worker-6 172.16.1.129:31318 check fall 3 rise 2
+   server worker-9 172.16.1.117:31318 check fall 3 rise 2
+   server worker-1 172.16.1.191:31318 check fall 3 rise 2
+   server worker-2 172.16.1.192:31318 check fall 3 rise 2
+   server worker-3 172.16.1.144:31318 check fall 3 rise 2
+   server worker-5 172.16.1.145:31318 check fall 3 rise 2
+
+
+
