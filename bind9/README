@@ -1,0 +1,38 @@
+vi /etc/bind/named.conf.options
+#172.16.2.24
+
+apt-get install bind9
+slow request response
+
+
+
+This seemed to have solved the problem
+
+http://serverfault.com/questions/722...recursion-slow
+
+I do not run the OS in a VM, however, the default setting was to offload checksum calculations
+
+Before
+Quote:
+# ethtool -k eth0 | grep on
+rx-checksumming: on
+tx-checksumming: on
+scatter-gather: on
+tcp segmentation offload: on
+udp fragmentation offload: off
+generic segmentation offload: on
+Disable offloading
+Quote:
+# ethtool -K eth0 tx off rx off
+# /etc/init.d/network restart
+After
+Quote:
+# ethtool -k eth0 | grep on
+scatter-gather: on
+tcp segmentation offload: off
+udp fragmentation offload: off
+generic segmentation offload: on 
+
+
+
+https://www.linuxquestions.org/questions/linux-software-2/bind-named-slow-response-4175590904/
