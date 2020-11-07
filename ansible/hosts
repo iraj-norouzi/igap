@@ -1,0 +1,22 @@
+[local]
+localhost ansible_connection=local
+[work]
+worker-[1:15] http_port=80  ansible_conection=ssh anisble_user=root
+
+[work:vars]
+ntp_server=IRAN
+[stack]
+#stack-1  #10.11.15.121
+stack-2  #10.11.15.122
+stack-3  #10.11.15.123
+stack-4  #10.11.15.124
+stack-5  #10.11.15.125
+stack-6  #10.11.15.126
+stack-7  #10.11.15.127
+stack-8  #10.11.15.128
+stack-9  #10.11.15.129
+stack-10 #10.11.15.130
+
+
+[stack:vars]
+ansible_user=igap
