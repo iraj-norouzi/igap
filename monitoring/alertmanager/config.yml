@@ -1,0 +1,21 @@
+#receivers:
+#- name: 'default'
+#  webhook_configs:
+#  - url: http://172.16.2.20:8080
+#    send_resolved: true
+route:
+  group_by: [Alertname]
+  # Send all notifications to me.
+  receiver: email-me
+
+receivers:
+- name: email-me
+  email_configs:
+  - to: useriraj2000@gmail.com, monitoring@kianiranian.com, mehrdad.hosein@gmail.com, a.taghavi@kianiranian.com, m.zamani@kianiranian.com, tehran0iot@gmail.com, safadar@kianiranian.com, taghavi2755@gmail.com
+    from: useriraj2000@gmail.com
+    smarthost: smtp.gmail.com:587
+    auth_username: useriraj2000@gmail.com
+    auth_identity: useriraj2000@gmail.com
+    auth_password: ir@j283580
+    send_resolved: true
+
