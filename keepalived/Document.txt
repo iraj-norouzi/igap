@@ -1,4 +1,0 @@
-web site example configuration
-
-https://tecadmin.net/setup-ip-failover-on-ubuntu-with-keepalived/
-
